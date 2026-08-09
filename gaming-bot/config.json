@@ -1,27 +1,20 @@
 {
-  "adminRoleIds": ["1526913504668287026"],
-  "supportRoleIds": ["1526913504668287026"],
-  "changelogAnnounceChannelId": "1530572775255834696",
-  "ticketCategoryId": "1527923229480583409",
-  "transcriptLogChannelId": "1527245695612878998",
+  "adminRoleIds": ["1502284638117429328"],
+  "supportRoleIds": ["1502285349408211056"],
+  "changelogAnnounceChannelId": "",
+  "ticketCategoryId": "1533777336141484072",
+  "transcriptLogChannelId": "1535883000800215070",
   "trapChannelIds": ["1531999106237726901"],
-  "welcomeChannelId": "1526915443326062735",
-  "ticketRoleIds": ["1526936584253997146"],
-  "levelUpChannelId": "1530801281369641113",
-  "modRoleIds": ["1526911450466222203"],
-  "modLogChannelId": "1530947462897078354",
-  "mutedRoleId": "1530947173666259085",
-  "levelRoles": [
-    { "level": 5, "roleId": "1530876340583268424" },
-    { "level": 10, "roleId": "1530877245202235503" },
-    { "level": 15, "roleId": "1530877718550544384" },
-    { "level": 30, "roleId": "1530877819801043155" }
-  ],
-  "minecraftServerIp": "donutsmp.net",
-  "tiktokAnnounceChannelId": "1495028019436195972",
-  "tiktokPingRoleId": "1496446108279242762",
+  "welcomeChannelId": "1524413663061217320",
+  "ticketRoleIds": ["1502284638117429328"],
+  "modRoleIds": ["1510169476535160962"],
+  "modLogChannelId": "1535882301752483901",
+  "mutedRoleId": "1535883580457222234",
+  "minecraftServerIp": "hightidepvp.net",
+  "tiktokAnnounceChannelId": "1535884538977329192",
+  "tiktokPingRoleId": "1502634430936912032",
   "tiktokAccounts": [
-    { "username": "voidplier.exe" }
+    { "username": "pattypal07" }
   ],
   "maxOpenTicketsPerUser": 2,
   "closeCountdownSeconds": 2,
@@ -93,24 +86,24 @@
     "color": "#5865F2",
     "roles": [
       {
-        "roleId": "1526927178749448354",
+        "roleId": "1507231678181933056",
         "label": "spawner price ping",
         "emoji": "📢"
       },
       {
-        "roleId": "1526927249604083904",
+        "roleId": "1501838444182376518",
         "label": "Giveaway ping",
         "emoji": "🎉"
       },
       {
-        "roleId": "1526927287486779566",
+        "roleId": "1507231640936779886",
         "label": "quickdrop pings",
         "emoji": "🎁"
       }
     ]
   },
  "dailyGiveaway": {
-  "enabled": true,
+  "enabled": false,
   "channelId": "1532002698101002372",
   "prize": "3m Donut SMP",
   "winnerCount": 1,
@@ -128,11 +121,4 @@
     "minAccountAgeMinutes": 10,
     "alertChannelId": "1530947462897078354"
   },
-  "changelog": [
-    { "version": 8, "title": "Added Antinuke/Raid Protection" },
-    { "version": 9, "title": "Added Update Changelog System" },
-    { "version": 10, "title": "Added Calculator" },
-    { "version": 11, "title": "Added auto logger" },
-    { "version": 12, "title": "daily giveaways and purge and bot trap" }
-  ]
 }
