@@ -10,10 +10,10 @@ module.exports = {
     .setDescription('Post a custom embed message')
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .addStringOption((opt) =>
-      opt.setName('title').setDescription('Embed title').setRequired(true)
+      opt.setName('description').setDescription('Embed description/body text').setRequired(true)
     )
     .addStringOption((opt) =>
-      opt.setName('description').setDescription('Embed description/body text').setRequired(true)
+      opt.setName('title').setDescription('Embed title').setRequired(false)
     )
     .addStringOption((opt) =>
       opt.setName('color').setDescription('Hex color, e.g. #5865F2').setRequired(false)
@@ -23,6 +23,12 @@ module.exports = {
     )
     .addStringOption((opt) =>
       opt.setName('image').setDescription('Image URL').setRequired(false)
+    )
+    .addBooleanOption((opt) =>
+      opt
+        .setName('plain')
+        .setDescription('Send as normal text instead of an embed (no side bar/box)')
+        .setRequired(false)
     ),
 
   async execute(interaction) {
@@ -31,13 +37,22 @@ module.exports = {
     const color = interaction.options.getString('color') || '#5865F2';
     const footer = interaction.options.getString('footer');
     const image = interaction.options.getString('image');
+    const plain = interaction.options.getBoolean('plain') || false;
+
+    if (plain) {
+      let content = title ? `**${title}**\n${description}` : description;
+      if (footer) content += `\n\n${footer}`;
+      await interaction.channel.send({ content });
+      await interaction.reply({ content: 'Message posted.', ephemeral: true });
+      return;
+    }
 
     const embed = new EmbedBuilder()
-      .setTitle(title)
       .setDescription(description)
       .setColor(color)
       .setTimestamp();
 
+    if (title) embed.setTitle(title);
     if (footer) embed.setFooter({ text: footer });
     if (image) embed.setImage(image);
 
