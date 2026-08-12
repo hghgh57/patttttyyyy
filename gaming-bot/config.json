@@ -105,6 +105,11 @@
         "roleId": "1507231640936779886",
         "label": "quickdrop pings",
         "emoji": "🎁"
+      },
+      {
+        "roleId": "1536970496254410832",
+        "label": "stream pings",
+        "emoji": "📸"
       }
     ]
   },
