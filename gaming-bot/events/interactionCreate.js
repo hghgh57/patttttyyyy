@@ -204,9 +204,15 @@ module.exports = {
           const roleId = interaction.customId.replace('rr_', '');
           const member = interaction.member;
 
+          // Acknowledge immediately — role fetch/add/remove below are all
+          // network calls, and doing them before any response risks missing
+          // Discord's 3-second interaction deadline, which leaves the
+          // button stuck showing a loading spinner client-side.
+          await interaction.deferReply({ ephemeral: true });
+
           const role = await interaction.guild.roles.fetch(roleId).catch(() => null);
           if (!role) {
-            return interaction.reply({ content: 'That role no longer exists.', ephemeral: true });
+            return interaction.editReply({ content: 'That role no longer exists.' });
           }
 
           // Prefer the friendly label from config.json over the raw Discord
@@ -219,23 +225,21 @@ module.exports = {
           if (member.roles.cache.has(roleId)) {
             try {
               await member.roles.remove(roleId);
-              await interaction.reply({ content: `Removed the **${displayName}** role.`, ephemeral: true });
+              await interaction.editReply({ content: `Removed the **${displayName}** role.` });
             } catch (err) {
               console.error(`Failed to remove role ${roleId} (${displayName}) from ${member.user.tag}:`, err);
-              await interaction.reply({
+              await interaction.editReply({
                 content: `❌ I couldn't remove the **${displayName}** role — I may not have permission (check my role is above it in Server Settings → Roles).`,
-                ephemeral: true,
               });
             }
           } else {
             try {
               await member.roles.add(roleId);
-              await interaction.reply({ content: `Gave you the **${displayName}** role!`, ephemeral: true });
+              await interaction.editReply({ content: `Gave you the **${displayName}** role!` });
             } catch (err) {
               console.error(`Failed to add role ${roleId} (${displayName}) to ${member.user.tag}:`, err);
-              await interaction.reply({
+              await interaction.editReply({
                 content: `❌ I couldn't give you the **${displayName}** role — I may not have permission (check my role is above it in Server Settings → Roles).`,
-                ephemeral: true,
               });
             }
           }
