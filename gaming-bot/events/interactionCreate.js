@@ -209,12 +209,35 @@ module.exports = {
             return interaction.reply({ content: 'That role no longer exists.', ephemeral: true });
           }
 
+          // Prefer the friendly label from config.json over the raw Discord
+          // role name, so the message matches what's configured (e.g.
+          // "Giveaway ping") instead of whatever the role happens to be
+          // named in the server.
+          const configEntry = (config.reactionRoles?.roles || []).find((r) => r.roleId === roleId);
+          const displayName = configEntry?.label || role.name;
+
           if (member.roles.cache.has(roleId)) {
-            await member.roles.remove(roleId).catch(() => {});
-            await interaction.reply({ content: `Removed the **${role.name}** role.`, ephemeral: true });
+            try {
+              await member.roles.remove(roleId);
+              await interaction.reply({ content: `Removed the **${displayName}** role.`, ephemeral: true });
+            } catch (err) {
+              console.error(`Failed to remove role ${roleId} (${displayName}) from ${member.user.tag}:`, err);
+              await interaction.reply({
+                content: `❌ I couldn't remove the **${displayName}** role — I may not have permission (check my role is above it in Server Settings → Roles).`,
+                ephemeral: true,
+              });
+            }
           } else {
-            await member.roles.add(roleId).catch(() => {});
-            await interaction.reply({ content: `Gave you the **${role.name}** role!`, ephemeral: true });
+            try {
+              await member.roles.add(roleId);
+              await interaction.reply({ content: `Gave you the **${displayName}** role!`, ephemeral: true });
+            } catch (err) {
+              console.error(`Failed to add role ${roleId} (${displayName}) to ${member.user.tag}:`, err);
+              await interaction.reply({
+                content: `❌ I couldn't give you the **${displayName}** role — I may not have permission (check my role is above it in Server Settings → Roles).`,
+                ephemeral: true,
+              });
+            }
           }
           return;
         }
