@@ -103,8 +103,11 @@ module.exports = {
 
       if (interaction.isStringSelectMenu() && interaction.customId === 'ticket_category_select') {
         const categoryId = interaction.values[0];
-        await createTicket(interaction, categoryId);
-        await resetTicketDropdown(interaction.message);
+        try {
+          await createTicket(interaction, categoryId);
+        } finally {
+          await resetTicketDropdown(interaction.message);
+        }
         return;
       }
 
@@ -243,10 +246,6 @@ module.exports = {
           const roleId = interaction.customId.replace('rr_', '');
           const member = interaction.member;
 
-          // Acknowledge immediately — role fetch/add/remove below are all
-          // network calls, and doing them before any response risks missing
-          // Discord's 3-second interaction deadline, which leaves the
-          // button stuck showing a loading spinner client-side.
           await interaction.deferReply({ ephemeral: true });
 
           const role = await interaction.guild.roles.fetch(roleId).catch(() => null);
@@ -254,10 +253,6 @@ module.exports = {
             return interaction.editReply({ content: 'That role no longer exists.' });
           }
 
-          // Prefer the friendly label from config.json over the raw Discord
-          // role name, so the message matches what's configured (e.g.
-          // "Giveaway ping") instead of whatever the role happens to be
-          // named in the server.
           const configEntry = (config.reactionRoles?.roles || []).find((r) => r.roleId === roleId);
           const displayName = configEntry?.label || role.name;
 
