@@ -1,9 +1,4 @@
-const {
-  SlashCommandBuilder,
-  EmbedBuilder,
-  ActionRowBuilder,
-  StringSelectMenuBuilder,
-} = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
 const config = require('../config.json');
 const { isAdmin } = require('../utils/permissions');
 
@@ -22,11 +17,6 @@ module.exports = {
       return interaction.reply({ content: 'No applications are configured yet.', ephemeral: true });
     }
 
-    const embed = new EmbedBuilder()
-      .setTitle('📋 Applications')
-      .setDescription('Select which application you want to fill out below.')
-      .setColor('#5865F2');
-
     const menu = new StringSelectMenuBuilder()
       .setCustomId('application_select')
       .setPlaceholder('Select an application…')
@@ -39,9 +29,15 @@ module.exports = {
         }))
       );
 
-    const row = new ActionRowBuilder().addComponents(menu);
+    const embed = new EmbedBuilder()
+      .setTitle('📋 Applications')
+      .setDescription('Select which application you want to fill out below.')
+      .setColor('#5865F2');
 
-    await interaction.channel.send({ embeds: [embed], components: [row] });
+    await interaction.channel.send({
+      embeds: [embed],
+      components: [new ActionRowBuilder().addComponents(menu)],
+    });
     await interaction.reply({ content: 'Application panel posted.', ephemeral: true });
   },
 };
